@@ -100,6 +100,15 @@ const showQuestion = (question) => {
             if (question.selectedAnswers.length === 0 || !question.selectedAnswers.includes(e.target.innerText)) {
                 if(question.selectedAnswers.length <= (2 + questionIndex)){
                     question.selectedAnswers.push(e.target.innerText)
+                    // Displaying the error message
+                } else {
+                    let errorMessage = document.createElement('div');
+                    errorMessage.innerHTML = `Odabrali ste više odgovora nego što je dopušteno`
+                    questionElement.appendChild(errorMessage);
+                    // Removing the error message after 3 seconds
+                    setTimeout(() => {
+                        questionElement.removeChild(errorMessage);
+                    }, 3000);
                 }
                 // Enabling the Show Results button
                 if(questions.every(question => question.selectedAnswers.length > 0)){
@@ -133,7 +142,11 @@ const handlePrev = () => {
         setQuestion()
     }
 }
+const handleShowResults = () =>{
+    console.log('fdsfsdfdgd5465467547')
+}
 
 window.onload = setQuestion()
 nextBtn.addEventListener("click", handleNext)
 prevBtn.addEventListener("click", handlePrev)
+showResultsBtn.addEventListener("click", handleShowResults)
