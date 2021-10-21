@@ -1,10 +1,10 @@
 const nextBtn = document.getElementById("next-btn")
 const prevBtn = document.getElementById("prev-btn")
+const showResultsBtn = document.getElementById("show-results-btn")
 const questionElement = document.getElementById("question")
 const answerElements = document.getElementById("answers")
 
-const questions = [
-    {
+const questions = [{
         question: "pitanje 1",
         answers: [
             { ans: '1' },
@@ -64,47 +64,76 @@ const questions = [
 
 let questionIndex = 0
 const setQuestion = () => {
+    if(questionIndex !== 0){
+        prevBtn.classList.remove("hidden")
+    } else {
+        prevBtn.classList.add("hidden")
+    }
+    
+    // Hiding the Next button and showing the Show Results button
+    if(questionIndex === (questions.length - 1)){
+        nextBtn.classList.add("hidden")
+        showResultsBtn.classList.remove("hidden") 
+    } else {
+        nextBtn.classList.remove("hidden")
+        showResultsBtn.classList.add("hidden")
+    }
+
+    questions.forEach(question => {
+        console.log(question.selectedAnswers)
+    })    
+
     showQuestion(questions[questionIndex])
 }
 
 // Show question
 const showQuestion = (question) => {
-    console.log(question.question)
-    questionElement.innerText = question.question 
-    randomNumber = Math.trunc(Math.random() * (8 - 2 + 1) + 2 ) - 1
-    for(let i = 0; i < randomNumber; i++){
+    questionElement.innerText = question.question
+    randomNumber = Math.trunc(Math.random() * (8 - 2 + 1) + 2)  // Random number between 2 and 8
+    // Creating random number buttons
+    for (let i = 0; i < randomNumber; i++) {
         const button = document.createElement("button")
+        answerElements.appendChild(button)
         button.innerText = questions[questionIndex].answers[i].ans
-        button.addEventListener("click", (e)=> {
-            if(question.selectedAnswers.length === 0 || !question.selectedAnswers.includes(e.target.innerText)){
-                question.selectedAnswers.push(e.target.innerText)
-                console.log(question.selectedAnswers)
+        // Adding slected answers to the selectedAnswers array for each question
+        button.addEventListener("click", (e) => {
+            if (question.selectedAnswers.length === 0 || !question.selectedAnswers.includes(e.target.innerText)) {
+                if(question.selectedAnswers.length <= (2 + questionIndex)){
+                    question.selectedAnswers.push(e.target.innerText)
+                }
+                // Enabling the Show Results button
+                if(questions.every(question => question.selectedAnswers.length > 0)){
+                    showResultsBtn.disabled = false
+                } else {
+                    showResultsBtn.disabled = true
+                }
             }
         })
-        answerElements.appendChild(button) 
-    }    
+    }
 }
 
-
-
 // Next question
-const handleNext = () =>{
-    if(questionIndex <= questions.length){
+const handleNext = () => {
+    if (questionIndex <= questions.length) {
         questionIndex++
+        while (answerElements.firstChild) {
+            answerElements.removeChild(answerElements.firstChild)
+        }
         setQuestion()
     }
-    
 }
 
 // Previous question
 const handlePrev = () => {
-
-}
-
-// Answer select
-const handleAnserSelect = () => {
-
+    if (questionIndex >= 0) {
+        questionIndex--
+        while (answerElements.firstChild) {
+            answerElements.removeChild(answerElements.firstChild)
+        }
+        setQuestion()
+    }
 }
 
 window.onload = setQuestion()
 nextBtn.addEventListener("click", handleNext)
+prevBtn.addEventListener("click", handlePrev)
