@@ -8,7 +8,7 @@ const resultsContainer = document.getElementById("results-container")
 
 const questions = [{
         id: "1",
-        question: "pitanje 1",
+        question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac molestie justo?",
         answers: [
             { ans: '1' },
             { ans: '2' },
@@ -23,7 +23,7 @@ const questions = [{
     },
     {
         id: "2",
-        question: "pitanje 2",
+        question: "Vestibulum tempus, quam eget condimentum pretium, tellus ligula imperdiet?",
         answers: [
             { ans: '1' },
             { ans: '2' },
@@ -38,7 +38,7 @@ const questions = [{
     },
     {
         id: "3",
-        question: "pitanje 3",
+        question: "Donec leo tellus, consequat eget ornare sit amet, ultricies at felis?",
         answers: [
             { ans: '1' },
             { ans: '2' },
@@ -53,7 +53,7 @@ const questions = [{
     },
     {   
         id: "4",
-        question: "pitanje 4",
+        question: "Pellentesque sed erat sagittis, aliquam magna eget, consequat est?",
         answers: [
             { ans: '1' },
             { ans: '2' },
@@ -110,7 +110,7 @@ const showQuestion = (question) => {
                 if(question.selectedAnswers.length <= (2 + questionIndex)){
                     question.selectedAnswers.push(e.target.innerText)
                     // Changing the background color in the question bar
-                    questionBar.children[questionIndex].style.backgroundColor = "blue"
+                    questionBar.children[questionIndex].classList.add("selected")
                     // Displaying the warning message
                 } else {
                     let warningMessage = document.createElement('div');
