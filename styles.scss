@@ -3,6 +3,7 @@
 $containerBgColor: #56a8d4;
 $redColor: #492549;
 $blueColor: #181d43;
+
 * {
   margin: 0;
   padding: 0;
@@ -19,6 +20,22 @@ $blueColor: #181d43;
   background: $blueColor;
 }
 
+.disabled{
+  background: #727272;
+  color: white;
+
+  &:hover{
+    background: #727272;
+    color: white;
+  }
+}
+
+.chosen{
+  border: 3px solid $containerBgColor;
+  background-color: $blueColor;
+  color: $containerBgColor;
+}
+
 body {
   height: 100vh;
   display: flex;
@@ -33,19 +50,23 @@ main {
 }
 
 .container {
-  height: auto;
+  height: 80vh;
+  width: 80vw;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   padding: 30px;
-  max-width: 1920px;
+  margin: 0 10px;
   background: rgba($containerBgColor, 0.2);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px;
 }
 
 /* BUTTONS */
 button {
-  width: 100%;
+  width: 50%;
   outline: none;
   color: $containerBgColor;
   background: transparent;
@@ -63,18 +84,16 @@ button:hover {
   background-color: $redColor;
   color: $blueColor;
 }
-
-button:active {
-  background-color: $blueColor;
-  border: 3px solid $blueColor;
-  color: $redColor;
-}
-
+/* QUESTION */
 #question {
   height: auto;
+  margin-bottom: 10px;
   font-size: 1.2rem;
   font-weight: 700;
   color: $containerBgColor;
+  background: $blueColor;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 /* ANSWERS */
@@ -126,11 +145,7 @@ button:active {
     color: $blueColor;
   }
 
-  & div:active {
-    background-color: $blueColor;
-    border: 3px solid $blueColor;
-    color: $redColor;
-  }
+
 }
 
 /* RESULTS */
@@ -140,14 +155,12 @@ button:active {
   width: 100%;
   justify-content: space-evenly;
 
-  .question-answers {
+  .answer {
+    color: $containerBgColor;
+    font-weight: 700;
     display: flex;
     flex-direction: row;
   }
 }
 
-@media screen and (min-width: 280px) {
-    #question{
-        padding-top: auto;
-    }
-}
+

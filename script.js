@@ -51,7 +51,7 @@ const questions = [{
         ],
         selectedAnswers: []
     },
-    {   
+    {
         id: "4",
         question: "Pellentesque sed erat sagittis, aliquam magna eget, consequat est?",
         answers: [
@@ -72,20 +72,20 @@ let questionIndex = 0
 const setQuestion = () => {
 
     // Hiding the previous button if first question is displayed
-    if(questionIndex !== 0){
+    if (questionIndex !== 0) {
         prevBtn.classList.remove("hidden")
     } else {
         prevBtn.classList.add("hidden")
     }
-    
+
     // Hiding the Next button and showing the Show Results button
-    if(questionIndex === (questions.length - 1)){
+    if (questionIndex === (questions.length - 1)) {
         nextBtn.classList.add("hidden")
-        showResultsBtn.classList.remove("hidden") 
+        showResultsBtn.classList.remove("hidden")
     } else {
         nextBtn.classList.remove("hidden")
         showResultsBtn.classList.add("hidden")
-    }  
+    }
     showQuestion(questions[questionIndex])
 }
 
@@ -98,7 +98,7 @@ const showQuestion = (question) => {
     }
 
     questionElement.innerText = question.question
-    randomNumber = Math.trunc(Math.random() * (8 - 2 + 1) + 2)  // Random number between 2 and 8
+    randomNumber = Math.trunc(Math.random() * (8 - 2 + 1) + 2) // Random number between 2 and 8
     // Creating random number buttons
     for (let i = 0; i < randomNumber; i++) {
         const button = document.createElement("button")
@@ -107,14 +107,17 @@ const showQuestion = (question) => {
         // Adding slected answers to the selectedAnswers array for each question
         button.addEventListener("click", (e) => {
             if (question.selectedAnswers.length === 0 || !question.selectedAnswers.includes(e.target.innerText)) {
-                if(question.selectedAnswers.length <= (2 + questionIndex)){
+                // Adding the "chosen" class to chosen answers
+                e.target.classList.add("chosen")
+                if (question.selectedAnswers.length <= (2 + questionIndex)) {
                     question.selectedAnswers.push(e.target.innerText)
                     // Changing the background color in the question bar
                     questionBar.children[questionIndex].classList.add("selected")
                     // Displaying the warning message
                 } else {
                     let warningMessage = document.createElement('div');
-                    warningMessage.innerHTML = `Odabrali ste više odgovora nego što je dopušteno`
+                    warningMessage.innerHTML = `You have chosen more answers than it is allowed!`
+                    warningMessage.style.color='red'
                     questionElement.appendChild(warningMessage);
                     // Removing the warning message after 3 seconds
                     setTimeout(() => {
@@ -122,7 +125,8 @@ const showQuestion = (question) => {
                     }, 3000);
                 }
                 // Enabling the Show Results button
-                if(questions.every(question => question.selectedAnswers.length > 0)){
+                if (questions.every(question => question.selectedAnswers.length > 0)) {
+                    showResultsBtn.classList.remove("disabled")
                     showResultsBtn.disabled = false
                 } else {
                     showResultsBtn.disabled = true
@@ -154,14 +158,15 @@ const handlePrev = () => {
     }
 }
 
+// Displaying the question bar
 const displayQuestionBar = () => {
-    for(i = 0; i < questions.length; i++){
+    for (i = 0; i < questions.length; i++) {
         const questionNumContainer = document.createElement("div")
         const questionNum = document.createElement("p")
         questionNum.innerText = questions[i].id
         questionNumContainer.appendChild(questionNum)
         questionNumContainer.addEventListener("click", () => {
-            questionIndex = Number(questionNum.innerText) -1 
+            questionIndex = Number(questionNum.innerText) - 1
             setQuestion()
         })
         questionBar.appendChild(questionNumContainer)
@@ -169,21 +174,24 @@ const displayQuestionBar = () => {
     }
 }
 
-const handleShowResults = () =>{
-    for(let i = 0; i < questions.length; i++){
-        const questionAnswersContainer = document.createElement("div")
-        questionAnswersContainer.classList.add("question-answers")
-        for(let x = 0; x < questions[i].selectedAnswers.length; x++){
+// Showing results
+const handleShowResults = () => {
+    // Creating Question (i): 
+    for(i = 0; i < resultsContainer.children.length; i++){
+        const number = document.createElement("p")
+        number.innerText = `Question ${i + 1}:\u00A0`
+        resultsContainer.children[i].appendChild(number)
+        // Adding selected answers to Question (i):
+        for(x = 0; x < questions[i].selectedAnswers.length; x++ ){
             const questionAnswer = document.createElement("p")
-            questionAnswer.innerText = questions[i].selectedAnswers[x]
-            console.log(questionAnswer)
-            questionAnswersContainer.appendChild(questionAnswer)
-        }
-
-        resultsContainer.appendChild(questionAnswersContainer)
-        
+            questionAnswer.innerText = `${questions[i].selectedAnswers[x]}\u00A0`
+            resultsContainer.children[i].appendChild(questionAnswer) 
+       }
     }
 }
+
+
+
 
 window.onload = setQuestion()
 window.onload = displayQuestionBar()
